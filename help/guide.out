@@ -1,3 +1,5 @@
 \BOOKMARK [1][-]{section.1}{Terminology}{}% 1
-\BOOKMARK [1][-]{section.2}{RDD Operations}{}% 2
-\BOOKMARK [1][-]{section.3}{Other Documentation and Links}{}% 3
+\BOOKMARK [1][-]{section.2}{Spark Use Cases}{}% 2
+\BOOKMARK [1][-]{section.3}{RDD Operations}{}% 3
+\BOOKMARK [1][-]{section.4}{Other Documentation and Links}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Hive vs Spark}{section.4}% 5

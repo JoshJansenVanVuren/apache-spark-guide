@@ -18,19 +18,47 @@ Python}
 \section*{Introduction}
 This document seeks to outline and describe the model utilised by Apache Spark.
 \\\\
-"Apache Spark is a fast and general-purpose cluster computing system."
-
+"Apache Spark is a fast and general-purpose cluster computing system." 
+\\
+"Apache Spark lets you use clusters of tens, hundreds, or thousands of servers to run simulations in a way that is intuitive and scales to meet your needs."
 \section{Terminology}
 \begin{itemize}
-\item \textbf{Resilient Distributed Datasets - RDD: } fault-tolerant collection of elements that can be operated on in parallel. (Old Programming Interface - pre Spark 2.0)
+\item \textbf{Resilient Distributed Datasets - RDD: } fault-tolerant collection of elements that can be operated on in parallel. Optimized for parallel processing.
 \item \textbf{Dataset: } Distributed collection of data, newer programming interface, better performance over RDD's (supported in Java and Scala but currently not in Python).
 \item \textbf{DataFrame: } is a DataSet organized into named columns, conceptually equivalent to a relational DB table (supported in Scala,Java,Python,R).
 \item \textbf{Parallelization: } members from collection are copied to form a distributed dataset, to be operated on in parallel. Slicing the data into a number of partitions to be used in the cluster.
 \item \textbf{External Datasets} spark can create distributed datasets from any storage source supported by Hadoop.
 \item \textbf{Cluster: } ...
-\item \textbf{Cloud Dataproc: } Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores.
+\item \textbf{Cloud Dataproc: } Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores. Can provision capacity on demand and pay for it by the minute. Spark jobs can be submitted and run on Dataproc.
+\item \textbf{Spark vs Beam: } Apache Beam can be classified as a tool in the "Workflow Manager" category, while Apache Spark is grouped under "Big Data Tools" \footnote{https://stackshare.io/stackups/apache-beam-vs-spark}.
+\item \textbf{Spark vs Hadoop: Hadoop is more focused towards batching and spark streaming. Spark utilises HDFS for}
 \end{itemize}
 
+\textbf{Spark}
+Memory Intensive \\
+Streaming builds RDD's then creates micro-batches, processed by Spark engine, outputting processed data. Not per data stream. \\
+Utility being a all-in-one solution for all processing needs.
+
+Booking.com utilises spark for online ML features for real-time prediction of behaviour and preference of users.
+
+\textbf{Kafka} \\
+Data Pipeline \\
+
+
+\section{Spark Use Cases}
+\begin{itemize}
+\item Streaming Data
+	\begin{itemize}
+		\item Streaming Extract, Transform, Load
+		\item Data Enrichment
+		\item Trigger Event Detection
+		\item Complex Session Analysis - session activity easy to group and analyse
+	\end{itemize}
+\item ML
+\end{itemize}
+\\
+\textbf{Functions:}
+Able to read from and write to BigQuery, but only supported in Scala \href{example here}{https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example}
 
 \section{RDD Operations}
 \begin{itemize}
@@ -43,6 +71,23 @@ This document seeks to outline and describe the model utilised by Apache Spark.
 \section{Other Documentation and Links}
 \begin{itemize}
 \item \href{https://cloud.google.com/dataproc/docs/tutorials/gcs-connector-spark-tutorial}{Google Cloud Storage Connector with Apache Spark}
+\item \href{https://www.qubole.com/blog/apache-spark-use-cases/}{Apache Spark Use Cases}
+\item \href{https://cloud.google.com/docs/authentication/getting-started}{Google Cloud Console Authentication Setup}
 \end{itemize}
+Comparison Between Spark and Beam
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+RDD & PCollection & Both Immutable Data Storage Structures \\ \hline
+Transformations & PTransform & Both receive their relevant immutable datasets and output the same type
+\end{tabular}
+\end{center}
+
+\subsection{Hive vs Spark}
+\textbf{Hive}
+Horizontally scalable. \\
+SQL Interface, operating on Hadoop. \\
+Built for data warehousing operations \\
+
 
 \end{document}
