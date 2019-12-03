@@ -23,10 +23,20 @@ This document seeks to outline and describe the model utilised by Apache Spark.
 \section{Terminology}
 \begin{itemize}
 \item \textbf{Resilient Distributed Datasets - RDD: } fault-tolerant collection of elements that can be operated on in parallel. (Old Programming Interface - pre Spark 2.0)
-\item \textbf{Dataset: } New programming interface, better performance over RDD's.
+\item \textbf{Dataset: } Distributed collection of data, newer programming interface, better performance over RDD's (supported in Java and Scala but currently not in Python).
+\item \textbf{DataFrame: } is a DataSet organized into named columns, conceptually equivalent to a relational DB table (supported in Scala,Java,Python,R).
 \item \textbf{Parallelization: } members from collection are copied to form a distributed dataset, to be operated on in parallel. Slicing the data into a number of partitions to be used in the cluster.
+\item \textbf{External Datasets} spark can create distributed datasets from any storage source supported by Hadoop.
 \item \textbf{Cluster: } ...
 \item \textbf{Cloud Dataproc: } Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores.
+\end{itemize}
+
+
+\section{RDD Operations}
+\begin{itemize}
+\item \textbf{Transformations } create new dataset from an existing one
+\item \textbf{Actions } return a value to the driver program after running a computation on the dataset.
+\item \textbf{Note } all transformations are lazy, therefore they do not compute all results immediately, only when required.
 \end{itemize}
 
 \section{Other Documentation and Links}
