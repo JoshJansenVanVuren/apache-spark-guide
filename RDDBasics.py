@@ -6,30 +6,9 @@
 
 from pyspark import SparkContext, SparkConf
 from pyspark.sql.functions import *
+from ClimateData import ClimateRecord
 
-
-class ClimateRecord(object):
-
-    def __init__(self, string):
-        s = self.splitCSVIntoArray(string)
-        self.date = s[0]
-        self.actualMinTemp = int(s[1])
-        self.actualMaxTemp = int(s[2])
-        self.actualMeanTemp = (float(s[2])+float(s[1]))/2
-        self.averageMinTemp = int(s[3])
-        self.averageMaxTemp = int(s[4])
-
-    def toString(self):
-        print("Date: %s \nMin Temp: %i \nMax Temp: %i \nAvg Min Temp: %i \nAvg Max Temp: %i \n" % (
-            self.date, self.actualMinTemp, self.actualMaxTemp, self.averageMinTemp, self.averageMaxTemp))
-
-    def splitCSVIntoArray(self, csv):
-        sSplit = csv.split(",")
-        # print(sSplit)
-        return sSplit
-
-    def getMinTemp(self):
-        return self.actualMinTemp
+# Structure for holding the climate data records
 
 
 def stringToClimateData(s):
@@ -64,13 +43,21 @@ climateRecords = lines.map(stringToClimateData)
 
 
 def printMean(x):
-    #x.actualMeanTemp = (x.actualMinTemp + x.actualMaxTemp)/2
-    # print(x.actualMeanTemp)
-    print(x.actualMeanTemp)
+    print(x.getMaxTemp())
 
 
-climateRecords.map(printMean).take(10)
+climateRecords.map(printMean).take(10)  # print only 10
 
-# TODO:
-# filter day which
-#climateRecords.reduce(lambda a, b: a + b)
+# return only the max and mean max columns
+onlyMaxandMeanTemp = climateRecords.map(
+    lambda a: (a.getMaxTemp(), a.getAvgMaxTemp())).collect()
+
+# for (i, j) in onlyMaxandMeanTemp:
+#    print("Max: %i \nMean Max: %i" % (i, j))
+
+# filter out the days whose max is higher than the average max
+aboveAverageMax = climateRecords.filter(
+    lambda x: x.isAboveAverageMax() == 1).collect()
+
+for x in aboveAverageMax:
+    print("Date: %s \tMax: %i" % (x.getDate(), x.getMaxTemp()))

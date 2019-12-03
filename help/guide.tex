@@ -36,7 +36,8 @@ This document seeks to outline and describe the model utilised by Apache Spark.
 \begin{itemize}
 \item \textbf{Transformations } create new dataset from an existing one
 \item \textbf{Actions } return a value to the driver program after running a computation on the dataset.
-\item \textbf{Note } all transformations are lazy, therefore they do not compute all results immediately, only when required.
+\item \textbf{Note } all transformations are lazy, therefore they do not compute all results immediately, only when required. One would need to run a \verb"collect()" or some other action.
+\item \textbf{Models } ML models can be run on data through the spark structure, \href{https://github.com/apache/spark/blob/master/examples/src/main/python/kmeans.py}{example here}
 \end{itemize}
 
 \section{Other Documentation and Links}
