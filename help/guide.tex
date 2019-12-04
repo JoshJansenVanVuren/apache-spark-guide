@@ -29,20 +29,27 @@ This document seeks to outline and describe the model utilised by Apache Spark.
 \item \textbf{Parallelization: } members from collection are copied to form a distributed dataset, to be operated on in parallel. Slicing the data into a number of partitions to be used in the cluster.
 \item \textbf{External Datasets} spark can create distributed datasets from any storage source supported by Hadoop.
 \item \textbf{Cluster: } ...
-\item \textbf{Cloud Dataproc: } Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores. Can provision capacity on demand and pay for it by the minute. Spark jobs can be submitted and run on Dataproc.
+\item \textbf{Cloud Dataproc: } Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores. Can provision capacity on demand and pay for it by the minute. Spark jobs can be submitted and run on Dataproc. 
 \item \textbf{Spark vs Beam: } Apache Beam can be classified as a tool in the "Workflow Manager" category, while Apache Spark is grouped under "Big Data Tools" \footnote{https://stackshare.io/stackups/apache-beam-vs-spark}.
 \item \textbf{Spark vs Hadoop: Hadoop is more focused towards batching and spark streaming. Spark utilises HDFS for}
 \end{itemize}
 
 \textbf{Spark}
 Memory Intensive \\
-Streaming builds RDD's then creates micro-batches, processed by Spark engine, outputting processed data. Not per data stream. \\
+Streaming builds RDD's then creates micro-batches, processed by Spark engine, outputting processed data. Not per record stream. \\
 Utility being a all-in-one solution for all processing needs.
 
 Booking.com utilises spark for online ML features for real-time prediction of behaviour and preference of users.
 
 \textbf{Kafka} \\
 Data Pipeline \\
+Record-at-a-time processing
+
+\textbf{Hive}
+Horizontally scalable. \\
+SQL Interface, operating on Hadoop. \\
+Built for data warehousing operations \\
+
 
 
 \section{Spark Use Cases}
@@ -58,7 +65,9 @@ Data Pipeline \\
 \end{itemize}
 \\
 \textbf{Functions:}
-Able to read from and write to BigQuery, but only supported in Scala \href{example here}{https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example}
+Able to read from and write to BigQuery \href{example here}{https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example}
+\\\\
+
 
 \section{RDD Operations}
 \begin{itemize}
@@ -82,12 +91,5 @@ RDD & PCollection & Both Immutable Data Storage Structures \\ \hline
 Transformations & PTransform & Both receive their relevant immutable datasets and output the same type
 \end{tabular}
 \end{center}
-
-\subsection{Hive vs Spark}
-\textbf{Hive}
-Horizontally scalable. \\
-SQL Interface, operating on Hadoop. \\
-Built for data warehousing operations \\
-
 
 \end{document}

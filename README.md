@@ -1,6 +1,6 @@
 # Apache Spark Guide
 
-This document outlines the required packages to run the relevant files. The objective of this task is to outline and familiarize the user with the Apache Spark Model.
+This document outlines the required packages and steps to run the relevant examples. The objective of this task is to outline and familiarize the user with the Apache Spark Model.
 
 ## Software and Version Information
 
@@ -43,7 +43,7 @@ This is the example includes some UDF's, but still runs locally in batch, and in
 
 BigQuery only supported in Scala [example here](https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example)
 
-### Example 3 - Dataproc and Cloud Storage
+### Example 3 - Dataproc and Cloud Storage (WordCountGoogleStorage.py)
 
 This example reads a text file from a cloud storage bucket, does a simple word count on that data and outputs the word count to a text file in that same bucket
 
@@ -61,9 +61,24 @@ gcloud dataproc jobs submit pyspark WordCountGoogleStorage.py \
     -- gs://${BUCKET_NAME}/input/ gs://${BUCKET_NAME}/output/
 ```
 
-### Example 4 - Dataproc and Cloud Storage
+### Example 4 - Dataproc Big Query (BigQueryExample.py)
 
-TODO
+This example does a simple word count from data stored on a public big query table. Does a word count on the data and then outputs the word count to another big query table.
+
+#### Some info
+
+`gs://spark-lib/bigquery/spark-bigquery-latest.jar` is the jar of the connector to bigquery
+
+1. Create a cluster, note the bucket name `${CLUSTER_NAME}`.
+2. Create a BigQuery dataset with the name `wordcount_dataset`.
+3. Run the command:
+
+```cmd
+gcloud dataproc jobs submit pyspark BigQueryExample.py \
+    --cluster=${CLUSTER_NAME}   \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
+```
+
 
 ## Documentation
 
@@ -72,6 +87,9 @@ For a more comprehensive discussion of the Apache Spark Model see `help/guide.pd
 ## File Descriptions
 
 `ClimateData.py` structure to hold read in climate data
+
 `test.py` unit testing
+
 `SparkQuickStart.py` most basic implementation of spark structure
+
 `RDDBasics.py` spark implementation with UDF's and unit tests
