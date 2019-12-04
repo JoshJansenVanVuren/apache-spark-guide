@@ -79,7 +79,6 @@ gcloud dataproc jobs submit pyspark BigQueryExample.py \
     --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
 ```
 
-
 ## Documentation
 
 For a more comprehensive discussion of the Apache Spark Model see `help/guide.pdf`

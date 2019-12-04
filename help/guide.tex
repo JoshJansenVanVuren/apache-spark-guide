@@ -2,6 +2,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[latin9]{inputenc}
 \usepackage{hyperref}
+\usepackage{graphicx}
 
 \usepackage{parskip}
 %\usepackage{babel}
@@ -16,43 +17,43 @@ Python}
 \maketitle
 
 \section*{Introduction}
-This document seeks to outline and describe the model utilised by Apache Spark.
+This document seeks to outline and describe the programming model utilised by Apache Spark, and compare utility to other frameworks.
 \\\\
 "Apache Spark is a fast and general-purpose cluster computing system." 
 \\
 "Apache Spark lets you use clusters of tens, hundreds, or thousands of servers to run simulations in a way that is intuitive and scales to meet your needs."
 \section{Terminology}
 \begin{itemize}
-\item \textbf{Resilient Distributed Datasets - RDD: } fault-tolerant collection of elements that can be operated on in parallel. Optimized for parallel processing.
-\item \textbf{Dataset: } Distributed collection of data, newer programming interface, better performance over RDD's (supported in Java and Scala but currently not in Python).
-\item \textbf{DataFrame: } is a DataSet organized into named columns, conceptually equivalent to a relational DB table (supported in Scala,Java,Python,R).
-\item \textbf{Parallelization: } members from collection are copied to form a distributed dataset, to be operated on in parallel. Slicing the data into a number of partitions to be used in the cluster.
-\item \textbf{External Datasets} spark can create distributed datasets from any storage source supported by Hadoop.
-\item \textbf{Cluster: } ...
-\item \textbf{Cloud Dataproc: } Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores. Can provision capacity on demand and pay for it by the minute. Spark jobs can be submitted and run on Dataproc. 
-\item \textbf{Spark vs Beam: } Apache Beam can be classified as a tool in the "Workflow Manager" category, while Apache Spark is grouped under "Big Data Tools" \footnote{https://stackshare.io/stackups/apache-beam-vs-spark}.
-\item \textbf{Spark vs Hadoop: Hadoop is more focused towards batching and spark streaming. Spark utilises HDFS for}
+\item \textbf{Resilient Distributed Datasets - RDD:} Fault-tolerant collection of elements that can be operated on in parallel. Optimized for parallel processing.
+\item \textbf{Dataset:} Distributed collection of data, newer programming interface, better performance over RDD's (supported in Java and Scala but currently not in Python).
+\item \textbf{DataFrame:} Dataset organized into named columns, conceptually equivalent to a relational DB table (supported in Scala,Java,Python,R).
+\item \textbf{DStreams:} Sequence of RDD's as defined by user based of time intervals.
+\item \textbf{Parallelization:} Members from collection are copied to form a distributed dataset, to be operated on in parallel. Slicing the data into a number of partitions to be used in the cluster.
+\item \textbf{External Datasets:} Spark can create distributed datasets from any storage source supported by Hadoop.
+\item \textbf{Cluster:} Groups of Compute Engine VM's with master and worker VM's.
+\item \textbf{Cloud Dataproc:} Google Cloud Dataproc lets you provision Apache Hadoop clusters and connect to underlying analytic data stores. "Can provision capacity on demand and pay for it by the minute". Spark jobs can be submitted and run on Dataproc. 
 \end{itemize}
-
-\textbf{Spark}
-Memory Intensive \\
-Streaming builds RDD's then creates micro-batches, processed by Spark engine, outputting processed data. Not per record stream. \\
-Utility being a all-in-one solution for all processing needs.
-
-Booking.com utilises spark for online ML features for real-time prediction of behaviour and preference of users.
-
-\textbf{Kafka} \\
-Data Pipeline \\
-Record-at-a-time processing
-
-\textbf{Hive}
-Horizontally scalable. \\
-SQL Interface, operating on Hadoop. \\
-Built for data warehousing operations \\
-
-
-
-\section{Spark Use Cases}
+\section{Systems}
+\subsection{Beam}
+\begin{itemize}
+\item Beam provides the ability to utilise multiple different runners, these runners are compared through a capability matrix - \href{https://beam.apache.org/documentation/runners/capability-matrix/}{available here}. From the matrix it is clear that all areas considered in data processing the number functionalities provided by Dataflow outweigh Spark.
+\item So one can utilise Spark to run Apache Beam pipelines, but Spark can also be run independently.
+\end{itemize}
+\subsection{Spark}
+\begin{itemize}
+\item Memory Intensive
+\item Streaming builds micro-batches (micro-batch size is a pre-set, fixed, time interval), processed by Spark engine, outputting processed data. Not per record stream.
+\item Data is structured in RDD's which is analogous to Beam's PCollection.
+\item Utility being a all-in-one solution for all processing needs.
+\item Can be run locally using servers or online utilising BigQuery, DataProc etc.
+\item Booking.com utilises spark for online ML features for real-time prediction of behaviour and preference of users.
+\item Streaming Inputs: Kafka, Flume, Kinesis, or TCP sockets
+\item MLib can be applied to data-streams. There are streaming ML algorithms which learn from streaming data and are applied to streaming data, and there are models which can be learned off historical data (offline) and then applied to streaming data.
+\item Streaming Outputs: Filesystems, databases, and live dashboards
+\end{itemize}
+\includegraphics[scale=0.5]{spark_streaming_model.png}
+\\\\
+\subsubsection{Spark Use Cases}
 \begin{itemize}
 \item Streaming Data
 	\begin{itemize}
@@ -62,34 +63,42 @@ Built for data warehousing operations \\
 		\item Complex Session Analysis - session activity easy to group and analyse
 	\end{itemize}
 \item ML
+\item Fog Computing
 \end{itemize}
-\\
-\textbf{Functions:}
-Able to read from and write to BigQuery \href{example here}{https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example}
-\\\\
-
-
-\section{RDD Operations}
+\subsubsection{Utilities:}
 \begin{itemize}
-\item \textbf{Transformations } create new dataset from an existing one
-\item \textbf{Actions } return a value to the driver program after running a computation on the dataset.
-\item \textbf{Note } all transformations are lazy, therefore they do not compute all results immediately, only when required. One would need to run a \verb"collect()" or some other action.
-\item \textbf{Models } ML models can be run on data through the spark structure, \href{https://github.com/apache/spark/blob/master/examples/src/main/python/kmeans.py}{example here}
+\item Able to read from and write to BigQuery, \href{https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example}{code here}.
+\item Can run ML algorithms from BigQuery data, \href{https://cloud.google.com/dataproc/docs/tutorials/bigquery-sparkml#spark-ml-tutorial_subset-python}{code here}.
 \end{itemize}
-
+\subsubsection{Libs:}
+\begin{itemize}
+\item \textbf{MLib} \url{https://spark.apache.org/docs/2.0.0/ml-guide.html}
+\end{itemize}
+\subsubsection{RDD Operations}
+\begin{itemize}
+\item \textbf{Transformations:} Create new dataset from an existing one
+\item \textbf{Actions:} Return a value to the driver program after running a computation on the dataset.
+\item \textbf{Note:} All transformations are lazy, therefore they do not compute all results immediately, only when required - by an action. One would need to run a \verb"collect()" or some other action.
+\item \textbf{Models:} ML models can be run on data through the spark structure, \href{https://github.com/apache/spark/blob/master/examples/src/main/python/kmeans.py}{example here}
+\end{itemize}
+\subsection{Kafka}
+\begin{itemize}
+\item Data Pipeline
+\item Record-at-a-time processing
+\end{itemize}
+\subsection{Hive}
+\begin{itemize}
+\item Horizontally scalable
+\item SQL Interface, operating on Hadoop
+\item Built for data warehousing operations
+\end{itemize}
+\subsection{Comparisons}
+\textbf{Spark vs Beam:} Apache Beam can be classified as a tool in the "Workflow Manager" category, while Apache Spark is grouped under "Big Data Tools" \footnote{https://stackshare.io/stackups/apache-beam-vs-spark}.\\\\
+\textbf{Spark vs Hadoop:} Hadoop is more focused towards batching, and spark towards streaming. Spark utilises HDFS for its file structuring. Spark was built over the Hadoop framework to achieve faster data processing in both batch and streaming applications.
 \section{Other Documentation and Links}
 \begin{itemize}
 \item \href{https://cloud.google.com/dataproc/docs/tutorials/gcs-connector-spark-tutorial}{Google Cloud Storage Connector with Apache Spark}
 \item \href{https://www.qubole.com/blog/apache-spark-use-cases/}{Apache Spark Use Cases}
 \item \href{https://cloud.google.com/docs/authentication/getting-started}{Google Cloud Console Authentication Setup}
 \end{itemize}
-Comparison Between Spark and Beam
-\begin{center}
-\begin{tabular}{|c|c|c|}
-\hline
-RDD & PCollection & Both Immutable Data Storage Structures \\ \hline
-Transformations & PTransform & Both receive their relevant immutable datasets and output the same type
-\end{tabular}
-\end{center}
-
 \end{document}

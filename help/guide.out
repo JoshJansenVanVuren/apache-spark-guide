@@ -1,5 +1,12 @@
 \BOOKMARK [1][-]{section.1}{Terminology}{}% 1
-\BOOKMARK [1][-]{section.2}{Spark Use Cases}{}% 2
-\BOOKMARK [1][-]{section.3}{RDD Operations}{}% 3
-\BOOKMARK [1][-]{section.4}{Other Documentation and Links}{}% 4
-\BOOKMARK [2][-]{subsection.4.1}{Hive vs Spark}{section.4}% 5
+\BOOKMARK [1][-]{section.2}{Systems}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{Beam}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Spark}{section.2}% 4
+\BOOKMARK [3][-]{subsubsection.2.2.1}{Spark Use Cases}{subsection.2.2}% 5
+\BOOKMARK [3][-]{subsubsection.2.2.2}{Utilities:}{subsection.2.2}% 6
+\BOOKMARK [3][-]{subsubsection.2.2.3}{Libs:}{subsection.2.2}% 7
+\BOOKMARK [3][-]{subsubsection.2.2.4}{RDD Operations}{subsection.2.2}% 8
+\BOOKMARK [2][-]{subsection.2.3}{Kafka}{section.2}% 9
+\BOOKMARK [2][-]{subsection.2.4}{Hive}{section.2}% 10
+\BOOKMARK [2][-]{subsection.2.5}{Comparisons}{section.2}% 11
+\BOOKMARK [1][-]{section.3}{Other Documentation and Links}{}% 12
