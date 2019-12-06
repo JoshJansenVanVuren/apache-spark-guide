@@ -1,4 +1,4 @@
-# Author: Joshua Jansen Van Vuren
+# Author: Joshua Jansen Van Vueren
 # Date: 2 Dec 2019
 # Desc: Implementing data processing via GCP tools
 

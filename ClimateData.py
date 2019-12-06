@@ -1,5 +1,5 @@
 """
-Author: Joshua Jansen Van Vuren
+Author: Joshua Jansen Van Vueren
 Desc: Class describing an object which contains climate and temperature data
 """
 

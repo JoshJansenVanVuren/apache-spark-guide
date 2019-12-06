@@ -1,4 +1,4 @@
-# Author: Joshua Jansen Van Vuren
+# Author: Joshua Jansen Van Vueren
 # Date: 3 Dec 2019
 # Desc: Unit Testing for RDDBasics example
 

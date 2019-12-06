@@ -7,7 +7,6 @@ Apply a model to that data
 Output Results to BigQuery
 """
 
-import numpy as np
 from pyspark.context import SparkContext
 from pyspark.ml.linalg import Vectors
 from pyspark.ml.clustering import KMeans
@@ -51,8 +50,8 @@ df = bio_stats_data.rdd.map(vector_from_inputs).toDF(["label",
 df.cache()
 
 # Trains a k-means model
-kmeans = KMeans().setK(2)
-model = kmeans.fit(df)
+kMeans = KMeans().setK(2)
+model = kMeans.fit(df)
 
 # Make predictions
 pred = model.transform(df)

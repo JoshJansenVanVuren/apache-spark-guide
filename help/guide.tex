@@ -51,6 +51,7 @@ This document seeks to outline and describe the programming model utilised by Ap
 \item Streaming Inputs: Kafka, Flume, Kinesis, or TCP sockets
 \item MLib can be applied to data-streams. There are streaming ML algorithms which learn from streaming data and are applied to streaming data, and there are models which can be learned off historical data (offline) and then applied to streaming data.
 \item Streaming Outputs: Filesystems, databases, and live dashboards
+\item It seems that scaling the jobs is handled by Spark, however it may be required to allocate more resources should the jobs require it.
 \end{itemize}
 \includegraphics[scale=0.5]{spark_streaming_model.png}
 \\\\
@@ -116,6 +117,5 @@ This document seeks to outline and describe the programming model utilised by Ap
 \item I would shift over to implementing Spark in Scala. It seems required if one would like to access the full capabilities of the system. There are numerous examples of streaming pipeline examples written in Scala.
 \item It is my intuition that there may be a way around the constraint of only batch implementations in PySpark. It would seem that \href{https://cloud.google.com/dataproc/docs/concepts/workflows/overview}{WorkFlows} in DataProc would have the ability to schedule jobs, and the BigQuery connector provided one could implement a windowing query. Alternatively a \href{https://stackoverflow.com/questions/30375571/running-scheduled-spark-job}{cron job} could do the trick.
 \item The new graph library in Spark could be of some utility, \href{https://spark.apache.org/docs/latest/graphx-programming-guide.html}{available here}.
-\section{The Code Implemented}
 \end{itemize}
 \end{document}
