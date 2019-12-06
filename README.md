@@ -7,7 +7,7 @@ This document outlines the required packages and steps to run the relevant examp
 1. Apache Spark 2.4.4 (pip install pyspark)
     * According to the spark documentation Spark 2.4.4 works with Python 2.7+ or Python 3.4+.
 2. Python Version 3.6.8
-3. Hadoop ??
+3. Java JDK V8
 
 ### Example 1 - Local Text File Read And Process (SparkQuickStart.py)
 
@@ -53,7 +53,7 @@ This example reads a text file from a cloud storage bucket, does a simple word c
 
 3. Create a bucket, note the bucket name `${BUCKET_NAME}`. inside the bucket create a folder `/input/` and upload any file that you would like word counts of.
 
-4. Run the command:
+4. Run the command, note that the cluster location may be required and requires another line in the command:
 
 ```cmd
 gcloud dataproc jobs submit pyspark WordCountGoogleStorage.py \
@@ -79,16 +79,54 @@ gcloud dataproc jobs submit pyspark BigQueryExample.py \
     --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
 ```
 
+### Example 5 - Big Query To K-Means to Big Query (BigQueryToMLToBigQuery.py)
+
+This example takes input from a big query table, transforms the data into a Dataset with columns ["label","features"] and then does a K-Means Clustering algorithm on the data, writing the output to another Big Query table.
+
+1. Create a cluster, note the bucket name `${CLUSTER_NAME}`.
+2. Create a BigQuery dataset with the name `bio_stats_data`.
+3. In that dataset create a table `bio_stats_table`, upload the CSV file `biostats.csv`.
+4. Run the command, when the job runs, the output will be sent to the table `bio_stats_clustered`.
+
+```cmd
+gcloud dataproc jobs submit pyspark BigQueryToMLToBigQuery.py \
+    --cluster=${CLUSTER_NAME}   \
+    --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
+```
+
+### Example 6 - Streaming Word Count (StreamingWordCountGoogleStorage.py)
+
+This example checks for new text files in a Google Storage Bucket, batches data based of a specified window, does a word count on the DStream and writes the data to another bucket in Google Storage
+
+1. ${CLUSTER}
+2. Create input and output buckets, note the bucket names `${BUCKET_NAME_IN}` and `${BUCKET_NAME_OUT}`, create a folder on the input bucket, and once the job is running upload a file of your choice.
+3. Run the command:
+
+```cmd
+gcloud dataproc jobs submit pyspark StreamingWordCountGoogleStorage.py \
+    --cluster=${CLUSTER_NAME} \
+    -- gs://${BUCKET_NAME_IN}/input/ gs://${BUCKET_NAME_OUT}/output/
+```
+
+#### Insights Needed
+
+* Is there flexibility in changing implemented models?
+* How simple is it to scale the system?
+* How simple is it to setup a streaming implementation, using windowed data?
+
+#### Findings
+
+* Data must be in a Dataset when working in certain libraries.
+* Dataset must have column with name "Features" when training certain models.
+* A temporary google storage bucket must be set.
+* There are two different avaiable ML libraries `spark.ml` and `spark.mllib`.
+
 ## Documentation
 
-For a more comprehensive discussion of the Apache Spark Model see `help/guide.pdf`
+For a more abstract discussion of the Apache Spark Model see `help/guide.pdf`
 
-## File Descriptions
+## Other Files
 
 `ClimateData.py` structure to hold read in climate data
 
-`test.py` unit testing
-
-`SparkQuickStart.py` most basic implementation of spark structure
-
-`RDDBasics.py` spark implementation with UDF's and unit tests
+`test.py` unit testing (no pipeline based tests implemented)

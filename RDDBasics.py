@@ -32,9 +32,8 @@ lineLengths = lines.map(lambda s: len(s))
 totalLength = lineLengths.reduce(lambda a, b: a + b)
 print("totalLength: %i" % (totalLength))
 
-# split lines
-# array = lines.map(splitCSVIntoArray)
-# array.saveAsTextFile("outputs/output.txt")
+# write out lines - note this will fail if the text file already exists
+lines.saveAsTextFile("outputs/output.txt")
 
 # convert from lines to climate records
 climateRecords = lines.map(stringToClimateData)
@@ -52,8 +51,10 @@ climateRecords.map(printMean).take(10)  # print only 10
 onlyMaxandMeanTemp = climateRecords.map(
     lambda a: (a.getMaxTemp(), a.getAvgMaxTemp())).collect()
 
-# for (i, j) in onlyMaxandMeanTemp:
-#    print("Max: %i \nMean Max: %i" % (i, j))
+# print them out - note the simplicity of splitting the columns and iterating
+# through the RDD
+for (i, j) in onlyMaxandMeanTemp:
+    print("Max: %i \nMean Max: %i" % (i, j))
 
 # filter out the days whose max is higher than the average max
 aboveAverageMax = climateRecords.filter(

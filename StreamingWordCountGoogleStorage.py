@@ -5,12 +5,8 @@
 '''
 RUNNING THE APPLICATION:
 gcloud dataproc jobs submit pyspark StreamingWordCountGoogleStorage.py \
-    --cluster=${CLUSTER} \
+    --cluster=${CLUSTER_NAME} \
     -- gs://${BUCKET_NAME}/input/ gs://${BUCKET_NAME}/output/
-
-gcloud dataproc jobs submit pyspark StreamingWordCountGoogleStorage.py \
-    --cluster=cluster-8035 \
-    -- gs://skripsie/input/ gs://skripsie/output/
 '''
 
 import pyspark
@@ -27,13 +23,17 @@ if __name__ == "__main__":
     inputUri = sys.argv[1]
     outputUri = sys.argv[2]
 
-    sc = SparkContext(appName="PythonStreamingHDFSWordCount")
-    ssc = StreamingContext(sc, 1)
+    sc = SparkContext(appName="PythonStreamingWordCount")
 
+    # 10 is the batch duration
+    ssc = StreamingContext(sc, 10)
+
+    # stream from google storage (checks for new text files)
     lines = ssc.textFileStream(sys.argv[1])
     words = lines.flatMap(lambda line: line.split())
     wordCounts = words.map(lambda word: (word, 1)).reduceByKey(
         lambda count1, count2: count1 + count2)
+    # write out proccesed DStream to a text file
     wordCounts.saveAsTextFiles(sys.argv[2])
 
     ssc.start()

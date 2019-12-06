@@ -5,7 +5,6 @@
 gcloud dataproc jobs submit pyspark BigQueryExample.py \
     --cluster=cluster-8035 	  \
     --jars=gs://spark-lib/bigquery/spark-bigquery-latest.jar
-
 """
 
 from pyspark.sql import SparkSession

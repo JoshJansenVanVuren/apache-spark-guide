@@ -1,3 +1,7 @@
+"""
+Author: Joshua Jansen Van Vuren
+Desc: Class describing an object which contains climate and temperature data
+"""
 
 
 class ClimateRecord(object):
@@ -31,5 +35,3 @@ class ClimateRecord(object):
 
     def isAboveAverageMax(self):
         return self.actualMaxTemp > self.averageMaxTemp
-
-# Converts a string to a climate record

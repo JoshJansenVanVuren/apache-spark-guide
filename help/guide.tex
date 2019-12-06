@@ -22,12 +22,14 @@ This document seeks to outline and describe the programming model utilised by Ap
 "Apache Spark is a fast and general-purpose cluster computing system." 
 \\
 "Apache Spark lets you use clusters of tens, hundreds, or thousands of servers to run simulations in a way that is intuitive and scales to meet your needs."
+\\
+"Overall, Spark has been a flexible, robust and scalable data processing engine... Spark Streaming provides efficient fault-tolerant stateful stream processing. It provides high throughput and good integration with data stores like Cassandra, Kafka, Hadoop etc."
 \section{Terminology}
 \begin{itemize}
 \item \textbf{Resilient Distributed Datasets - RDD:} Fault-tolerant collection of elements that can be operated on in parallel. Optimized for parallel processing.
-\item \textbf{Dataset:} Distributed collection of data, newer programming interface, better performance over RDD's (supported in Java and Scala but currently not in Python).
+\item \textbf{Dataset:} Distributed collection of data, newer programming interface, better performance over RDD's.
 \item \textbf{DataFrame:} Dataset organized into named columns, conceptually equivalent to a relational DB table (supported in Scala,Java,Python,R).
-\item \textbf{DStreams:} Sequence of RDD's as defined by user based of time intervals.
+\item \textbf{DStreams:} Sequence of RDD's as defined by user based of time intervals (micro-batching).
 \item \textbf{Parallelization:} Members from collection are copied to form a distributed dataset, to be operated on in parallel. Slicing the data into a number of partitions to be used in the cluster.
 \item \textbf{External Datasets:} Spark can create distributed datasets from any storage source supported by Hadoop.
 \item \textbf{Cluster:} Groups of Compute Engine VM's with master and worker VM's.
@@ -46,7 +48,6 @@ This document seeks to outline and describe the programming model utilised by Ap
 \item Data is structured in RDD's which is analogous to Beam's PCollection.
 \item Utility being a all-in-one solution for all processing needs.
 \item Can be run locally using servers or online utilising BigQuery, DataProc etc.
-\item Booking.com utilises spark for online ML features for real-time prediction of behaviour and preference of users.
 \item Streaming Inputs: Kafka, Flume, Kinesis, or TCP sockets
 \item MLib can be applied to data-streams. There are streaming ML algorithms which learn from streaming data and are applied to streaming data, and there are models which can be learned off historical data (offline) and then applied to streaming data.
 \item Streaming Outputs: Filesystems, databases, and live dashboards
@@ -65,10 +66,17 @@ This document seeks to outline and describe the programming model utilised by Ap
 \item ML
 \item Fog Computing
 \end{itemize}
+\textbf{Industry Use Cases:}
+\begin{itemize}
+\item Booking.com utilises spark for online ML features for real-time prediction of behaviour and preference of users.
+\item \href{https://medium.com/walmartlabs/how-we-built-a-data-pipeline-with-lambda-architecture-using-spark-spark-streaming-9d3b4b4555d3}{Walmart Labs Pipeline using Spark Streaming}
+\end{itemize}
 \subsubsection{Utilities:}
 \begin{itemize}
 \item Able to read from and write to BigQuery, \href{https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example}{code here}.
 \item Can run ML algorithms from BigQuery data, \href{https://cloud.google.com/dataproc/docs/tutorials/bigquery-sparkml#spark-ml-tutorial_subset-python}{code here}.
+\item Processes data from Pub/Sub using Dataproc and outputs to Datastore, \href{https://cloud.google.com/solutions/using-apache-spark-dstreams-with-dataproc-and-pubsub#whats-next}{code here}
+\item PySpark does have some streaming capabilities, but is limited in connectors, connectors like Kafka are supported; \href{https://spark.apache.org/docs/1.5.2/api/python/pyspark.streaming.html}{Py Spark Streaming Library}. I have yet to see a streaming example of PySpark that reads from and writes to any cloud storage, they all seem to implemented in a batch mode.
 \end{itemize}
 \subsubsection{Libs:}
 \begin{itemize}
@@ -94,11 +102,20 @@ This document seeks to outline and describe the programming model utilised by Ap
 \end{itemize}
 \subsection{Comparisons}
 \textbf{Spark vs Beam:} Apache Beam can be classified as a tool in the "Workflow Manager" category, while Apache Spark is grouped under "Big Data Tools" \footnote{https://stackshare.io/stackups/apache-beam-vs-spark}.\\\\
-\textbf{Spark vs Hadoop:} Hadoop is more focused towards batching, and spark towards streaming. Spark utilises HDFS for its file structuring. Spark was built over the Hadoop framework to achieve faster data processing in both batch and streaming applications.
+\textbf{Spark vs Hadoop:} Hadoop is more focused towards batching, and spark towards streaming. Spark utilises HDFS for its file structuring. Spark was built over the Hadoop framework to achieve faster data processing in both batch and streaming applications, at the cost of being more memory intensive.
 \section{Other Documentation and Links}
 \begin{itemize}
 \item \href{https://cloud.google.com/dataproc/docs/tutorials/gcs-connector-spark-tutorial}{Google Cloud Storage Connector with Apache Spark}
 \item \href{https://www.qubole.com/blog/apache-spark-use-cases/}{Apache Spark Use Cases}
 \item \href{https://cloud.google.com/docs/authentication/getting-started}{Google Cloud Console Authentication Setup}
+\item \href{https://jaceklaskowski.gitbooks.io/mastering-apache-spark/spark-rdd-caching.html}{Caching in Spark}
+\item \href{https://medium.com/capital-one-tech/filtering-vs-enriching-data-in-apache-spark-e44108c3a372}{Filtering Vs Enriching Data in Apache Spark}; interesting use case.
+\end{itemize}
+\section{Where to Go From Here}
+\begin{itemize}
+\item I would shift over to implementing Spark in Scala. It seems required if one would like to access the full capabilities of the system. There are numerous examples of streaming pipeline examples written in Scala.
+\item It is my intuition that there may be a way around the constraint of only batch implementations in PySpark. It would seem that \href{https://cloud.google.com/dataproc/docs/concepts/workflows/overview}{WorkFlows} in DataProc would have the ability to schedule jobs, and the BigQuery connector provided one could implement a windowing query. Alternatively a \href{https://stackoverflow.com/questions/30375571/running-scheduled-spark-job}{cron job} could do the trick.
+\item The new graph library in Spark could be of some utility, \href{https://spark.apache.org/docs/latest/graphx-programming-guide.html}{available here}.
+\section{The Code Implemented}
 \end{itemize}
 \end{document}
