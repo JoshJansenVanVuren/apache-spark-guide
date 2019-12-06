@@ -1,6 +1,0 @@
-#FileLock
-#Fri Dec 06 13:30:19 SAST 2019
-hostName=localhost
-id=16edaf99162964ba2c08f00db45a536eec9e76482b9
-method=file
-server=localhost\:41485
