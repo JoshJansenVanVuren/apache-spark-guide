@@ -8,21 +8,25 @@ import org.apache.spark.sql.SparkSession
  * mvn scala:run -DmainClass=com.josh.App
  */
 object App {
-  
-  def foo(x : Array[String]) = x.foldLeft("")((a,b) => a + b)
-  
   def main(args: Array[String]) {
-    val logFile = "skrip_input.txt" // Should be some file on your system
-    val spark = SparkSession
-                                      .builder()
-                                      .appName("Scala Spark Basic Example")
-                                      .config("spark.master", "local")
-                                      .getOrCreate();
+    // Get the text file name
+    val logFile = "skrip_input.txt"
+
+    // Start the Spark session
+    val spark = SparkSession.builder()
+                            .appName("Scala Spark Basic Example")
+                            .config("spark.master", "local")
+                            .getOrCreate()
+    
+    // Read in the file
     val logData = spark.read.textFile(logFile).cache()
+
+    // Some functions to count the number of lines that contain a's or b's
     val numAs = logData.filter(line => line.contains("a")).count()
     val numBs = logData.filter(line => line.contains("b")).count()
+
+    // Print the outputs
     println(s"Lines with a: $numAs, Lines with b: $numBs")
     spark.stop()
   }
-
 }

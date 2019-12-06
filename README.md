@@ -29,9 +29,8 @@ There are really only two installations required:
 
 Recommendations to get used to the Scala Environment:
 
-1. sudo apt-get install sbt
-2. I would recommend trying the scala hello world example [here](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html), this example uses sbt
-3. Further I would recommend, especially if you've never set up a scala maven project, following this [example](https://docs.scala-lang.org/tutorials/scala-with-maven.html) which gives a very neat method to setup new Scala Maven projects.
+1. I would recommend trying the scala hello world example [here](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html), this example uses sbt
+2. Further I would recommend, especially if you've never set up a scala maven project, following this [example](https://docs.scala-lang.org/tutorials/scala-with-maven.html) which gives a very neat method to setup new Scala Maven projects.
 
 ## PySparkExamples
 
