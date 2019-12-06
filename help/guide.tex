@@ -117,5 +117,6 @@ This document seeks to outline and describe the programming model utilised by Ap
 \item I would shift over to implementing Spark in Scala. It seems required if one would like to access the full capabilities of the system. There are numerous examples of streaming pipeline examples written in Scala.
 \item It is my intuition that there may be a way around the constraint of only batch implementations in PySpark. It would seem that \href{https://cloud.google.com/dataproc/docs/concepts/workflows/overview}{WorkFlows} in DataProc would have the ability to schedule jobs, and the BigQuery connector provided one could implement a windowing query. Alternatively a \href{https://stackoverflow.com/questions/30375571/running-scheduled-spark-job}{cron job} could do the trick.
 \item The new graph library in Spark could be of some utility, \href{https://spark.apache.org/docs/latest/graphx-programming-guide.html}{available here}.
+\item An examples of Scala using Maven implemented in HDInsight (Microsoft Azure), however it was coded using the IntelliJ IDE, I'm certain the example will be transferable, \href{https://docs.microsoft.com/bs-latn-ba/azure/hdinsight/spark/apache-spark-create-standalone-application}{available here}.
 \end{itemize}
 \end{document}

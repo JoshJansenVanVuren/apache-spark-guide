@@ -1,22 +1,46 @@
 # Apache Spark Guide
 
-This document outlines the required packages and steps to run the relevant examples. The objective of this task is to outline and familiarize the user with the Apache Spark Model.
+This document outlines the required packages, and provides a step-by-step guide to run the different PySpark examples. The objective of this task is to outline and familiarize the user with the Apache Spark Model.
 
-I would recommend cloning the repository locally and going through each example, all of which are relatively simple to understand. Giving a brief glance to the `help/guide.pdf` would also be advised as much of the programming model is discussed there as well as a multitude of links to different use-cases etcetera.
+I would recommend cloning the repository locally and going through each example, all of which are relatively simple to understand. A brief glance at `help/guide.pdf` would also be advised as much of the programming model is discussed. A multitude of links to different use-cases etcetera are also available in that document.
 
-## Software and Version Information
+## PySpark Software and Version Information
 
 1. Apache Spark 2.4.4 (pip install PySpark)
     * According to the spark documentation Spark 2.4.4 works with Python 2.7+ or Python 3.4+.
 2. Python Version 3.6.8
 3. Java JDK V8
+4. It's useful to have a virtual environment to not mess with other system dependencies:
+
+```cmd
+pip install virtualenv
+virtualenv -p {PATH_TO_PYTHON_INSTALL} venv
+source venv/bin/activate
+```
+
+## Scala Software and Version Information
+
+Initially I ran Scala using sbt on Ubuntu, this is quite convoluted however, because to build and deploy the project I used Maven, which I was more familiar with.
+
+There are really only two installations required:
+
+1. Maven `apt-get install maven`
+2. Java JDK 8 (Scala can run newer versions, but PySpark cannot)
+
+Recommendations to get used to the Scala Environment:
+
+1. sudo apt-get install sbt
+2. I would recommend trying the scala hello world example [here](https://docs.scala-lang.org/getting-started/sbt-track/getting-started-with-scala-and-sbt-on-the-command-line.html), this example uses sbt
+3. Further I would recommend, especially if you've never set up a scala maven project, following this [example](https://docs.scala-lang.org/tutorials/scala-with-maven.html) which gives a very neat method to setup new Scala Maven projects.
+
+## PySparkExamples
 
 ### Example 1 - Local Text File Read And Process (SparkQuickStart.py)
 
 This is the most basic example, and uses not UDF's.
 
-1. Ensure that the required libraries are installed.
-2. Clone repo and navigate to it in terminal
+1. Ensure that the required libraries are installed (`requirements.txt`)
+2. Clone repo locally and navigate to it in a terminal
 3. Add `{YOUR_SPARK_HOME}` into the command and run the command:
 
 ```cmd
@@ -25,13 +49,17 @@ This is the most basic example, and uses not UDF's.
   SparkQuickStart.py
 ```
 
-Alteratively if PySpark pip is installed on your environment then the applications can be run through `python {APP_NAME}.py`.
+Alteratively if PySpark pip is installed on your environment then the applications can be run through
 
-`local[4]` runs the code on 4 local cores.
+```cmd
+python {APP_NAME}.py
+```
+
+* `local[4]` runs the code on 4 local cores.
 
 ### Example 2 - RDD Basics (RDDBasics.py)
 
-This is the example includes some UDF's, but still runs locally in batch, and includes some unit tests. A few filters and transformations are computed on data to show the simplicity.
+This is the example includes some UDF's, but still runs locally and in batch, and includes some unit tests. A few filters and transformations are computed on data to highlight the simplicity.
 
 1. Ensure that the required libraries are installed.
 2. Clone repo and navigate to it in terminal
@@ -42,8 +70,6 @@ This is the example includes some UDF's, but still runs locally in batch, and in
   --master local[4] \
   SparkQuickStart.py
 ```
-
-BigQuery only supported in Scala [example here](https://cloud.google.com/dataproc/docs/tutorials/bigquery-connector-spark-example)
 
 ### Example 3 - DataProc and Cloud Storage (WordCountGoogleStorage.py)
 
@@ -53,7 +79,7 @@ This example reads a text file from a cloud storage bucket, does a simple word c
 
 2. Do all the correct authentication steps [getting started](https://cloud.google.com/docs/authentication/getting-started).
 
-3. Create a bucket, note the bucket name `${BUCKET_NAME}`. inside the bucket create a folder `/input/` and upload any file that you would like word counts of.
+3. Create a bucket, note the bucket name `${BUCKET_NAME}`. inside the bucket create a folder `/input/` and upload any file that you would like.
 
 4. Run the command, note that the cluster location may be required and requires another line in the command:
 
@@ -85,7 +111,7 @@ gcloud dataproc jobs submit pyspark BigQueryExample.py \
 
 This example takes input from a big query table, transforms the data into a Dataset with columns ["label","features"] and then does a K-Means Clustering algorithm on the data, writing the output to another Big Query table.
 
-1. Create a cluster, note the bucket name `${CLUSTER_NAME}`.
+1. Create a cluster, note the cluster name `${CLUSTER_NAME}`.
 2. Create a BigQuery dataset with the name `bio_stats_data`.
 3. In that dataset create a table `bio_stats_table`, upload the CSV file `biostats.csv`.
 4. Run the command, when the job runs, the output will be sent to the table `bio_stats_clustered`.
@@ -108,7 +134,7 @@ gcloud dataproc jobs submit pyspark BigQueryToMLToBigQuery.py \
 
 This example checks for new text files in a Google Storage Bucket, batches data based of a specified window, does a word count on the DStream and writes the data to another bucket in Google Storage
 
-1. ${CLUSTER}
+1. Create a cluster, note the cluster name `${CLUSTER_NAME}`.
 2. Create input and output buckets, note the bucket names `${BUCKET_NAME_IN}` and `${BUCKET_NAME_OUT}`, create a folder on the input bucket, and once the job is running upload a file of your choice.
 3. Run the command:
 
@@ -118,12 +144,38 @@ gcloud dataproc jobs submit pyspark StreamingWordCountGoogleStorage.py \
     -- gs://${BUCKET_NAME_IN}/input/ gs://${BUCKET_NAME_OUT}/output/
 ```
 
+## Scala Example
+
+1. Navigate to `ScalaTestProject/scalatest/`
+2. Run the command `mvn package`
+3. Run the command `mvn scala:run -DmainClass=com.josh.App`
+
+### Notes
+
+* The included dependencies can take different forms based on the system one uses to run the program (maven vs sbt).
+
+MAVEN
+
+```maven
+<dependency>
+    <groupId>org.apache.spark</groupId>
+    <artifactId>spark-sql_2.12</artifactId>
+    <version>2.4.4</version>
+</dependency>
+```
+
+SBT
+
+```sbt
+libraryDependencies += "org.apache.spark" %% "spark-sql" % "2.4.4"
+```
+
 ## Documentation
 
 For a more abstract discussion of the Apache Spark Model see `help/guide.pdf`
 
 ## Other Files
 
-`ClimateData.py` structure to hold read in climate data
+`PySparkExamples/ClimateData.py` structure to hold read in climate data
 
-`test.py` unit testing (no pipeline based tests implemented)
+`PySparkExamples/test.py` unit testing (no pipeline based tests implemented)
