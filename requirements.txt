@@ -3,4 +3,4 @@ numpy==1.22.0
 pep8==1.7.1
 py4j==0.10.7
 pycodestyle==2.5.0
-pyspark==3.2.2
+pyspark==3.3.2
